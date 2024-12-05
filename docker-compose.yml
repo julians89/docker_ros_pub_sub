@@ -1,0 +1,42 @@
+services:
+  roscore:
+    build:
+      context: images/ros_base
+      dockerfile: Dockerfile
+      target: ros_image
+    network_mode: "host"
+    command: >
+              bash -c "
+              source /opt/ros/noetic/setup.bash 
+              && roscore
+              && tail -f /dev/null"
+
+  pub:
+    build:
+      context: images/ros_base
+      dockerfile: Dockerfile
+      target: ros_image
+    network_mode: "host"
+    depends_on: 
+       - roscore
+    command: >
+              bash -c "
+              source /opt/ros/noetic/setup.bash 
+              && sleep 5 
+              && export ROS_MASTER_URI=http://${HOST_IP}:11311 
+              && rostopic pub /network_test std_msgs/String 'Hello World!' -r 1 
+              && tail -f /dev/null"
+
+  echo:
+    build:
+      context: images/ros_base
+      dockerfile: Dockerfile
+      target: ros_image
+    network_mode: "host"
+    command: >
+              bash -c "
+              source /opt/ros/noetic/setup.bash 
+              && sleep 5 
+              && export ROS_MASTER_URI=http://${HOST_IP}:11311 
+              && rostopic echo /network_test 
+              && tail -f /dev/null"
