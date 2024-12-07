@@ -12,8 +12,25 @@ class NRoute:
         self.prio = prio
 
     def eval(self):
-        response = os.system("ping -i 1 -c 1 -I " + self.iface + " " + self.destination)
-        return ~bool(response) #ping returns 0 for success
+        try:
+            response = subprocess.check_output(
+                ['ping', '-W', '1', '-c', '1', '-I', self.iface, self.destination],
+                stderr=subprocess.STDOUT,  # get all output
+                universal_newlines=True  # return string not bytes
+            )
+        except subprocess.CalledProcessError:
+            print ('PING ERROR')
+            response = None
+        
+        if response is None:
+            return False
+        
+        ping_success = response.find('1 packets transmitted, 1 received, 0% packet loss, time 0ms')
+        if ping_success < 0:
+            return False
+
+        return True
+
 
     def ip_sanity_check(self, ip):
         res = ip.split('.')
@@ -49,6 +66,8 @@ class NRouter:
     def run(self):
         # Choose active route, if multiple use route with highest prio
 
+        print (' ----------- RUN ----------')
+
         while True:
             route = None
             for nr in self.routes:
@@ -59,6 +78,9 @@ class NRouter:
                             route = nr
                     else:
                         route = nr
+
+
+            print ('  WINNING route ', route.iface, ' ', route.destination)
 
             # Adept routing table
             rt = RoutingTable()
@@ -85,10 +107,10 @@ class RoutingTable:
             self.parse_line(l.decode('UTF-8'))
 
     def remove_route(self, route):
+        print ('  REMOVING route ', route.iface, ' ', route.destination)
         output = subprocess.check_output("sudo /usr/sbin/route del "+ route.destination +" dev "+ route.iface, shell=True)
 
     def resolve_conflict(self, route):
-        print ('----------- Resolving conflicts --------------')
         # Remove all routes which have the same destination, but another interface
         for r in self.routes:
             if r.conflict(route):
@@ -100,15 +122,14 @@ class RoutingTable:
         #skip if route exists
         for r in self.routes:
             if r.equal(route):
-                print ('FOUND EQUAL ROUTE')
                 return
 
         #Erase an existing route if conflicting with new route
         self.resolve_conflict(route)
 
         #Add new route
+        print ('  ADDING route ', route.iface, ' ', route.destination)
         output = subprocess.check_output("sudo /usr/sbin/route add -host "+ route.destination +" dev "+ route.iface, shell=True)
-
 
 
 #Test
