@@ -79,6 +79,9 @@ class NRouter:
                     else:
                         route = nr
 
+            if route is None:
+                # Catch no route error case
+                continue
 
             print ('  WINNING route ', route.iface, ' ', route.destination)
 
@@ -130,7 +133,6 @@ class RoutingTable:
         #Add new route
         print ('  ADDING route ', route.iface, ' ', route.destination)
         output = subprocess.check_output("sudo /usr/sbin/route add -host "+ route.destination +" dev "+ route.iface, shell=True)
-
 
 #Test
 if __name__ == "__main__":
