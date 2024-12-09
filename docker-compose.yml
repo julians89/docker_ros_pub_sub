@@ -8,7 +8,8 @@ services:
     command: >
               bash -c "
               source /opt/ros/noetic/setup.bash 
-              && roscore
+              && export ROS_IP=${HOST_IP} 
+              && roscore 
               && tail -f /dev/null"
 
   pub:
@@ -24,6 +25,7 @@ services:
               source /opt/ros/noetic/setup.bash 
               && sleep 5 
               && export ROS_MASTER_URI=http://${HOST_IP}:11311 
+              && export ROS_HOSTNAME=${PUB_IP} 
               && export ROS_IP=${PUB_IP}
               && rostopic pub /network_test std_msgs/String 'Hello World!' -r 1 
               && tail -f /dev/null"
@@ -39,5 +41,7 @@ services:
               source /opt/ros/noetic/setup.bash 
               && sleep 5 
               && export ROS_MASTER_URI=http://${HOST_IP}:11311 
+              && export ROS_HOSTNAME=${SUB_IP} 
+              && export ROS_IP=${SUB_IP} 
               && rostopic echo /network_test 
               && tail -f /dev/null"
