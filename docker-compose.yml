@@ -5,9 +5,13 @@ services:
       dockerfile: Dockerfile
       target: ros_image
     network_mode: "host"
+    volumes:
+        - /home/julian/network_exp/catkin_ws:/catkin_ws
     command: >
               bash -c "
               source /opt/ros/noetic/setup.bash 
+              && cd catkin_ws 
+              && catkin build 
               && export ROS_IP=${HOST_IP} 
               && roscore 
               && tail -f /dev/null"
@@ -20,28 +24,33 @@ services:
     network_mode: "host"
     depends_on: 
        - roscore
+    volumes:
+        - /home/julian/network_exp/catkin_ws:/catkin_ws
     command: >
               bash -c "
-              source /opt/ros/noetic/setup.bash 
+              source /catkin_ws/devel/setup.bash 
               && sleep 5 
               && export ROS_MASTER_URI=http://${HOST_IP}:11311 
               && export ROS_HOSTNAME=${PUB_IP} 
               && export ROS_IP=${PUB_IP}
-              && rostopic pub /network_test std_msgs/String 'Hello World!' -r 1 
+              && rosrun pub_sub pub_sub_pub_node
               && tail -f /dev/null"
-
-  echo:
+  sub:
     build:
       context: images/ros_base
       dockerfile: Dockerfile
       target: ros_image
     network_mode: "host"
+    depends_on: 
+       - roscore
+    volumes:
+        - /home/julian/network_exp/catkin_ws:/catkin_ws
     command: >
               bash -c "
-              source /opt/ros/noetic/setup.bash 
+              source /catkin_ws/devel/setup.bash 
               && sleep 5 
               && export ROS_MASTER_URI=http://${HOST_IP}:11311 
               && export ROS_HOSTNAME=${SUB_IP} 
-              && export ROS_IP=${SUB_IP} 
-              && rostopic echo /network_test 
+              && export ROS_IP=${SUB_IP}
+              && rosrun pub_sub pub_sub_sub_node
               && tail -f /dev/null"

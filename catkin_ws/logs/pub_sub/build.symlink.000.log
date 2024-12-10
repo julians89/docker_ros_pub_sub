@@ -1,0 +1,5 @@
+Symlinking /catkin_ws/devel/lib/pub_sub/pub_sub_pub_node
+Symlinking /catkin_ws/devel/lib/pub_sub/pub_sub_sub_node
+Symlinking /catkin_ws/devel/lib/pkgconfig/pub_sub.pc
+Symlinking /catkin_ws/devel/share/pub_sub/cmake/pub_subConfig-version.cmake
+Symlinking /catkin_ws/devel/share/pub_sub/cmake/pub_subConfig.cmake

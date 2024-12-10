@@ -1,0 +1,5 @@
+Scanning dependencies of target pub_sub_sub_node
+[ 25%] Building CXX object CMakeFiles/pub_sub_sub_node.dir/src/sub.cpp.o
+[ 75%] Built target pub_sub_pub_node
+[100%] Linking CXX executable /catkin_ws/devel/.private/pub_sub/lib/pub_sub/pub_sub_sub_node
+[100%] Built target pub_sub_sub_node
