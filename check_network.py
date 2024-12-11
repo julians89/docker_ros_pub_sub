@@ -14,7 +14,7 @@ class NRoute:
     def eval(self):
         try:
             response = subprocess.check_output(
-                ['ping', '-W', '1', '-c', '1', '-I', self.iface, self.destination],
+                ['ping', '-W', '1', '-c', '1', self.destination],
                 stderr=subprocess.STDOUT,  # get all output
                 universal_newlines=True  # return string not bytes
             )
@@ -87,7 +87,14 @@ class NRouter:
 
             # Adept routing table
             rt = RoutingTable()
+
+            # Use the winning route's interface to reach destination
             rt.update(NRoute(route.iface, self.destination))
+
+            # Pipe all other routes through this interface as well ... for convenience e.g. existing publishers would still use the broken interface
+            for nr in self.routes:
+                if not route.equal(nr):
+                    rt.update(NRoute(route.iface, nr.destination))
 
             time.sleep(1)
 
