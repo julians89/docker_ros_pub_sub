@@ -32,7 +32,7 @@ services:
         - ${ROS_LOG_DIR}:/roslog
     command: >
               bash -c "
-              source /opt/ros/noetic/setup.bash 
+              source /catkin_ws/devel/setup.bash 
               && sleep 5 
               && export ROS_LOG_DIR=/roslog 
               && export ROSCONSOLE_CONFIG_FILE=/roslog/roslog.conf 
@@ -53,7 +53,7 @@ services:
         - ${ROS_LOG_DIR}:/roslog
     command: >
               bash -c "
-              source /opt/ros/noetic/setup.bash 
+              source /catkin_ws/devel/setup.bash 
               && sleep 5 
               && export ROS_LOG_DIR=/roslog 
               && export ROSCONSOLE_CONFIG_FILE=/roslog/roslog.conf 
