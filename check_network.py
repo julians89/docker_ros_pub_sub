@@ -14,7 +14,7 @@ class NRoute:
     def eval(self):
         try:
             response = subprocess.check_output(
-                ['ping', '-W', '1', '-c', '1', self.destination],
+                ['ping', '-W', '1', '-c', '1', '-I', self.iface, self.destination],
                 stderr=subprocess.STDOUT,  # get all output
                 universal_newlines=True  # return string not bytes
             )
