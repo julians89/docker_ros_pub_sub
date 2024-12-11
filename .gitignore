@@ -7,3 +7,5 @@ catkin_ws/.catkin_tools/
 
 roslog/
 !roslog/roslog.conf
+
+.env
