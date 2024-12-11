@@ -1,0 +1,62 @@
+services:
+  roscore:
+    build:
+      context: images/ros_base
+      dockerfile: Dockerfile
+      target: ros_image
+    network_mode: "host"
+    volumes:
+        - ${WORKSPACE_DIR}:/catkin_ws
+        - ${ROS_LOG_DIR}:/roslog
+    command: >
+              bash -c "
+              source /ros_base_ws/install_isolated/setup.bash 
+              && export ROS_LOG_DIR=/roslog 
+              && cd catkin_ws 
+              && catkin build 
+              && export ROS_IP=${HOST_IP} 
+              && roscore 
+              && tail -f /dev/null"
+
+  pub:
+    build:
+      context: images/ros_base
+      dockerfile: Dockerfile
+      target: ros_image
+    network_mode: "host"
+    depends_on: 
+       - roscore
+    volumes:
+        - ${WORKSPACE_DIR}:/catkin_ws
+        - ${ROS_LOG_DIR}:/roslog
+    command: >
+              bash -c "
+              source /ros_base_ws/install_isolated/setup.bash 
+              && sleep 5 
+              && export ROS_LOG_DIR=/roslog 
+              && export ROS_MASTER_URI=http://${HOST_IP}:11311 
+              && export ROS_HOSTNAME=${PUB_IP} 
+              && export ROS_IP=${PUB_IP}
+              && rosrun pub_sub pub_sub_pub_node
+              && tail -f /dev/null"
+  sub:
+    build:
+      context: images/ros_base
+      dockerfile: Dockerfile
+      target: ros_image
+    network_mode: "host"
+    depends_on: 
+       - roscore
+    volumes:
+        - ${WORKSPACE_DIR}:/catkin_ws
+        - ${ROS_LOG_DIR}:/roslog
+    command: >
+              bash -c "
+              source /ros_base_ws/install_isolated/setup.bash 
+              && sleep 5 
+              && export ROS_LOG_DIR=/roslog 
+              && export ROS_MASTER_URI=http://${HOST_IP}:11311 
+              && export ROS_HOSTNAME=${SUB_IP} 
+              && export ROS_IP=${SUB_IP}
+              && rosrun pub_sub pub_sub_sub_node
+              && tail -f /dev/null"

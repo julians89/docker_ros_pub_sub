@@ -1,7 +1,0 @@
-pub_sub
-/catkin_ws/devel/.private/pub_sub/cmake.lock /catkin_ws/devel/./cmake.lock
-/catkin_ws/devel/.private/pub_sub/lib/pub_sub/pub_sub_pub_node /catkin_ws/devel/lib/pub_sub/pub_sub_pub_node
-/catkin_ws/devel/.private/pub_sub/lib/pub_sub/pub_sub_sub_node /catkin_ws/devel/lib/pub_sub/pub_sub_sub_node
-/catkin_ws/devel/.private/pub_sub/lib/pkgconfig/pub_sub.pc /catkin_ws/devel/lib/pkgconfig/pub_sub.pc
-/catkin_ws/devel/.private/pub_sub/share/pub_sub/cmake/pub_subConfig-version.cmake /catkin_ws/devel/share/pub_sub/cmake/pub_subConfig-version.cmake
-/catkin_ws/devel/.private/pub_sub/share/pub_sub/cmake/pub_subConfig.cmake /catkin_ws/devel/share/pub_sub/cmake/pub_subConfig.cmake

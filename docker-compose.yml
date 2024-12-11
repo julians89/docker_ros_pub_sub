@@ -7,12 +7,15 @@ services:
     network_mode: "host"
     volumes:
         - ${WORKSPACE_DIR}:/catkin_ws
+        - ${ROS_LOG_DIR}:/roslog
     command: >
               bash -c "
               source /opt/ros/noetic/setup.bash 
-              && cd catkin_ws 
+              && export ROS_LOG_DIR=/roslog 
+              && export ROSCONSOLE_CONFIG_FILE=/roslog/roslog.conf 
+              && cd /catkin_ws 
               && catkin build 
-              && export ROS_IP=${HOST_IP} 
+              && export ROS_MASTER_URI=http://${HOST_IP}:11311 
               && roscore 
               && tail -f /dev/null"
 
@@ -26,14 +29,16 @@ services:
        - roscore
     volumes:
         - ${WORKSPACE_DIR}:/catkin_ws
+        - ${ROS_LOG_DIR}:/roslog
     command: >
               bash -c "
-              source /catkin_ws/devel/setup.bash 
+              source /opt/ros/noetic/setup.bash 
               && sleep 5 
+              && export ROS_LOG_DIR=/roslog 
+              && export ROSCONSOLE_CONFIG_FILE=/roslog/roslog.conf 
               && export ROS_MASTER_URI=http://${HOST_IP}:11311 
               && export ROS_HOSTNAME=${PUB_IP} 
-              && export ROS_IP=${PUB_IP}
-              && rosrun pub_sub pub_sub_pub_node
+              && roslaunch pub_sub pub.launch
               && tail -f /dev/null"
   sub:
     build:
@@ -45,12 +50,14 @@ services:
        - roscore
     volumes:
         - ${WORKSPACE_DIR}:/catkin_ws
+        - ${ROS_LOG_DIR}:/roslog
     command: >
               bash -c "
-              source /catkin_ws/devel/setup.bash 
+              source /opt/ros/noetic/setup.bash 
               && sleep 5 
+              && export ROS_LOG_DIR=/roslog 
+              && export ROSCONSOLE_CONFIG_FILE=/roslog/roslog.conf 
               && export ROS_MASTER_URI=http://${HOST_IP}:11311 
               && export ROS_HOSTNAME=${SUB_IP} 
-              && export ROS_IP=${SUB_IP}
-              && rosrun pub_sub pub_sub_sub_node
+              && roslaunch pub_sub sub.launch
               && tail -f /dev/null"

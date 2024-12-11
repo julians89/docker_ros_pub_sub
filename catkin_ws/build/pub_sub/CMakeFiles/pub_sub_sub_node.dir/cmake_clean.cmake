@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/catkin_ws/devel/.private/pub_sub/lib/pub_sub/pub_sub_sub_node"
-  "/catkin_ws/devel/.private/pub_sub/lib/pub_sub/pub_sub_sub_node.pdb"
+  "/catkin_ws/devel/lib/pub_sub/pub_sub_sub_node"
+  "/catkin_ws/devel/lib/pub_sub/pub_sub_sub_node.pdb"
   "CMakeFiles/pub_sub_sub_node.dir/src/sub.cpp.o"
 )
 

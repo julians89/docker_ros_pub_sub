@@ -1,0 +1,3 @@
+<launch>
+   <node pkg="pub_sub" type="pub_sub_pub_node" name="pub_sub_pub_node" output="log" />
+</launch>

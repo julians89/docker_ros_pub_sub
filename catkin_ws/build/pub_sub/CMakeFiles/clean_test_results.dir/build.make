@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /catkin_ws/build/pub_sub
 include CMakeFiles/clean_test_results.dir/progress.make
 
 CMakeFiles/clean_test_results:
-	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /catkin_ws/build/pub_sub/test_results
+	/usr/bin/python3 /ros_base_ws/install_isolated/share/catkin/cmake/test/remove_test_results.py /catkin_ws/build/pub_sub/test_results
 
 clean_test_results: CMakeFiles/clean_test_results
 clean_test_results: CMakeFiles/clean_test_results.dir/build.make

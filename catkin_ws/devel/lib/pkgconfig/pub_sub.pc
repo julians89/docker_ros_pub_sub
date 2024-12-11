@@ -1,1 +1,8 @@
-/catkin_ws/devel/.private/pub_sub/lib/pkgconfig/pub_sub.pc
+prefix=/catkin_ws/devel
+
+Name: pub_sub
+Description: Description of pub_sub
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

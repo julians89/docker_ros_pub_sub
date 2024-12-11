@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /catkin_ws/devel/.private/pub_sub/setup.sh
